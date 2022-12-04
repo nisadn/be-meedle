@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 import json
-from bsbi.views import BSBIIndex, VBEPostings, IdMap
+# from bsbi.views import BSBIIndex, VBEPostings, IdMap
 from django.core.files import File
 from django.contrib.staticfiles.storage import staticfiles_storage
 
