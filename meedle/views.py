@@ -4,6 +4,7 @@ import json
 from meedle.bsbi.bsbi import BSBIIndex
 from meedle.bsbi.compression import VBEPostings
 import os
+from poll.settings import BASE_DIR
 
 # Create your views here.
 def meedle_view(request):
@@ -52,7 +53,7 @@ def get_docs(request):
 
     result = {}
     for doc_id in body["docs_id"]:
-        with open(os.path.join("meedle", "bsbi", "collection", str(doc_id)), 'r') as f:
+        with open(os.path.join(BASE_DIR, "meedle", "bsbi", "collection", str(doc_id)), 'r') as f:
             result[doc_id] = f.read()
 
     return JsonResponse(result, safe=False)
