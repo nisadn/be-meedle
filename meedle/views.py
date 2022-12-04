@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 import json
-from meedle.bsbi.bsbi import BSBIIndex
-from meedle.bsbi.compression import VBEPostings
+# from meedle.bsbi.bsbi import BSBIIndex
+# from meedle.bsbi.compression import VBEPostings
 import os
 from poll.settings import BASE_DIR, STATIC_URL,STATIC_ROOT
 
