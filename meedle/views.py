@@ -21,7 +21,7 @@ from tqdm import tqdm
 import nltk
 # nltk.download('stopwords')
 from nltk.stem import PorterStemmer
-from nltk.corpus import stopwords
+# from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 
 # from django.contrib.staticfiles.storage import staticfiles_storage
@@ -459,7 +459,10 @@ class BSBIIndex:
         stemmer = PorterStemmer()
 
         # list of stopwords
-        stop_words = set(stopwords.words('english'))
+        # stop_words = set(stopwords.words('english'))
+        with open(staticfiles_storage.url('stopwords/english')[1:]) as f:
+            stop_words = f.read().split()
+        stop_words = set(stop_words)
 
         # tokenize
         tokenizer = RegexpTokenizer(r'\w+')
