@@ -2,7 +2,6 @@ from django.shortcuts import render
 import array
 import pickle
 import os
-from poll.settings import STATIC_ROOT
 
 import contextlib
 import heapq
@@ -31,7 +30,7 @@ class IdMap:
     akan melakukan hal tersebut.
     """
 
-    def __init__(self):
+    def __init__(self, str_to_id = {}, id_to_str = []):
         """
         Mapping dari string (term atau nama dokumen) ke id disimpan dalam
         python's dictionary; cukup efisien. Mapping sebaliknya disimpan dalam
@@ -44,8 +43,8 @@ class IdMap:
             id_to_str[8] ---> "halo"
             id_to_str[54] ---> "/collection/dir0/gamma.txt"
         """
-        self.str_to_id = {}
-        self.id_to_str = []
+        self.str_to_id = str_to_id
+        self.id_to_str = id_to_str
 
     def __len__(self):
         """Mengembalikan banyaknya term (atau dokumen) yang disimpan di IdMap."""
@@ -620,7 +619,7 @@ class BSBIIndex:
         self.output_dir = output_dir
         self.index_name = index_name
         self.postings_encoding = postings_encoding
-        self.module_dir = os.path.dirname(__file__)
+        # self.module_dir = os.path.dirname(__file__)
         # Untuk menyimpan nama-nama file dari semua intermediate inverted index
         self.intermediate_indices = []
 
@@ -637,12 +636,19 @@ class BSBIIndex:
     def load(self):
         """Memuat doc_id_map and term_id_map dari output directory"""
 
-        term_path = staticfiles_storage.url(f'{self.output_dir}/terms.dict')[1:]
-        with open(term_path, 'rb') as f:
-            self.term_id_map = pickle.load(File(f))
-        doc_path = staticfiles_storage.url(f'{self.output_dir}/docs.dict')[1:]
-        with open(doc_path, 'rb') as f:
-            self.doc_id_map = pickle.load(File(f))
+        term_str_to_id_path = staticfiles_storage.url(f'{self.output_dir}/terms_str_to_id.dict')[1:]
+        with open(term_str_to_id_path, 'rb') as f:
+            self.term_id_map.str_to_id = pickle.load(File(f))
+        term_id_to_str_path = staticfiles_storage.url(f'{self.output_dir}/terms_id_to_str.dict')[1:]
+        with open(term_id_to_str_path, 'rb') as f:
+            self.term_id_map.id_to_str = pickle.load(File(f))
+
+        doc_str_to_id_path = staticfiles_storage.url(f'{self.output_dir}/docs_str_to_id.dict')[1:]
+        with open(doc_str_to_id_path, 'rb') as f:
+            self.doc_id_map.str_to_id = pickle.load(File(f))
+        doc_id_to_str_path = staticfiles_storage.url(f'{self.output_dir}/docs_id_to_str.dict')[1:]
+        with open(doc_id_to_str_path, 'rb') as f:
+            self.doc_id_map.id_to_str = pickle.load(File(f))
 
     def parse_block(self, block_dir_relative):
         """
