@@ -19,5 +19,5 @@ def main():
 
 
 if __name__ == '__main__':
-    # from bsbi.views import IdMap
+    from bsbi.views import IdMap
     main()
