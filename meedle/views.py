@@ -322,8 +322,8 @@ class InvertedIndex:
         self.index_file.close()
 
         # Menyimpan metadata (postings dict dan terms) ke file metadata dengan bantuan pickle
-        with open(self.metadata_file_path, 'wb') as f:
-            pickle.dump([self.postings_dict, self.terms, self.doc_length], File(f))
+        # with open(self.metadata_file_path, 'wb') as f:
+        #     pickle.dump([self.postings_dict, self.terms, self.doc_length], File(f))
 
 
 class InvertedIndexReader(InvertedIndex):
