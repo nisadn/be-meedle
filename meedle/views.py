@@ -54,7 +54,7 @@ def get_docs(request):
 
     result = {}
     for doc_id in body["docs_id"]:
-        url = staticfiles_storage.url('collection/6/507.txt')
+        url = staticfiles_storage.url(f'collection/{str(doc_id)}')
         with open(url[1:], 'r') as f:
             result[doc_id] = File(f).read()
 
