@@ -5,6 +5,7 @@ import json
 import os
 from poll.settings import BASE_DIR, STATIC_URL,STATIC_ROOT, STATICFILES_DIRS
 from django.core.files import File
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 # Create your views here.
 def meedle_view(request):
@@ -53,7 +54,8 @@ def get_docs(request):
 
     result = {}
     for doc_id in body["docs_id"]:
-        with open(os.path.join(BASE_DIR, STATIC_URL, "collection", str(doc_id)), 'r') as f:
+        url = staticfiles_storage.url('collection/6/507.txt')
+        with open(url[1:], 'r') as f:
             result[doc_id] = File(f).read()
 
     return JsonResponse(result, safe=False)
