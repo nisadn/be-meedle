@@ -24,7 +24,7 @@ from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 
-from django.contrib.staticfiles.storage import staticfiles_storage
+# from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files import File
 
 class IdMap:
@@ -656,71 +656,71 @@ class BSBIIndex:
         with open(doc_id_to_str_path, 'rb') as f:
             self.doc_id_map.id_to_str = pickle.load(File(f))
 
-    def parse_block(self, block_dir_relative):
-        """
-        Lakukan parsing terhadap text file sehingga menjadi sequence of
-        <termID, docID> pairs.
+    # def parse_block(self, block_dir_relative):
+    #     """
+    #     Lakukan parsing terhadap text file sehingga menjadi sequence of
+    #     <termID, docID> pairs.
 
-        Gunakan tools available untuk Stemming Bahasa Inggris
+    #     Gunakan tools available untuk Stemming Bahasa Inggris
 
-        JANGAN LUPA BUANG STOPWORDS!
+    #     JANGAN LUPA BUANG STOPWORDS!
 
-        Untuk "sentence segmentation" dan "tokenization", bisa menggunakan
-        regex atau boleh juga menggunakan tools lain yang berbasis machine
-        learning.
+    #     Untuk "sentence segmentation" dan "tokenization", bisa menggunakan
+    #     regex atau boleh juga menggunakan tools lain yang berbasis machine
+    #     learning.
 
-        Parameters
-        ----------
-        block_dir_relative : str
-            Relative Path ke directory yang mengandung text files untuk sebuah block.
+    #     Parameters
+    #     ----------
+    #     block_dir_relative : str
+    #         Relative Path ke directory yang mengandung text files untuk sebuah block.
 
-            CATAT bahwa satu folder di collection dianggap merepresentasikan satu block.
-            Konsep block di soal tugas ini berbeda dengan konsep block yang terkait
-            dengan operating systems.
+    #         CATAT bahwa satu folder di collection dianggap merepresentasikan satu block.
+    #         Konsep block di soal tugas ini berbeda dengan konsep block yang terkait
+    #         dengan operating systems.
 
-        Returns
-        -------
-        List[Tuple[Int, Int]]
-            Returns all the td_pairs extracted from the block
-            Mengembalikan semua pasangan <termID, docID> dari sebuah block (dalam hal
-            ini sebuah sub-direktori di dalam folder collection)
+    #     Returns
+    #     -------
+    #     List[Tuple[Int, Int]]
+    #         Returns all the td_pairs extracted from the block
+    #         Mengembalikan semua pasangan <termID, docID> dari sebuah block (dalam hal
+    #         ini sebuah sub-direktori di dalam folder collection)
 
-        Harus menggunakan self.term_id_map dan self.doc_id_map untuk mendapatkan
-        termIDs dan docIDs. Dua variable ini harus 'persist' untuk semua pemanggilan
-        parse_block(...).
-        """
-        # TODO
-        # refs:
-        #   https://ksnugroho.medium.com/dasar-text-preprocessing-dengan-python-a4fa52608ffe
-        #   https://notebooks.githubusercontent.com/view/ipynb?azure_maps_enabled=true&browser=chrome&color_mode=auto&commit=4912ce487c4562da6b73447366a5fd421df7ac07&device=unknown&enc_url=68747470733a2f2f7261772e67697468756275736572636f6e74656e742e636f6d2f5a68656e67787572752f43533237362d7061312d736b656c65746f6e2d323031392f343931326365343837633435363264613662373334343733363661356664343231646637616330372f5041312d736b656c65746f6e2e6970796e62&logged_in=false&nwo=Zhengxuru%2FCS276-pa1-skeleton-2019&path=PA1-skeleton.ipynb&platform=android&repository_id=299051363&repository_type=Repository&version=103
+    #     Harus menggunakan self.term_id_map dan self.doc_id_map untuk mendapatkan
+    #     termIDs dan docIDs. Dua variable ini harus 'persist' untuk semua pemanggilan
+    #     parse_block(...).
+    #     """
+    #     # TODO
+    #     # refs:
+    #     #   https://ksnugroho.medium.com/dasar-text-preprocessing-dengan-python-a4fa52608ffe
+    #     #   https://notebooks.githubusercontent.com/view/ipynb?azure_maps_enabled=true&browser=chrome&color_mode=auto&commit=4912ce487c4562da6b73447366a5fd421df7ac07&device=unknown&enc_url=68747470733a2f2f7261772e67697468756275736572636f6e74656e742e636f6d2f5a68656e67787572752f43533237362d7061312d736b656c65746f6e2d323031392f343931326365343837633435363264613662373334343733363661356664343231646637616330372f5041312d736b656c65746f6e2e6970796e62&logged_in=false&nwo=Zhengxuru%2FCS276-pa1-skeleton-2019&path=PA1-skeleton.ipynb&platform=android&repository_id=299051363&repository_type=Repository&version=103
         
-        # create stemmer
-        stemmer = PorterStemmer()
+    #     # create stemmer
+    #     stemmer = PorterStemmer()
 
-        # list of stopwords
-        stop_words = set(stopwords.words('english'))
+    #     # list of stopwords
+    #     stop_words = set(stopwords.words('english'))
 
-        # tokenizer
-        tokenizer = RegexpTokenizer(r'\w+')
+    #     # tokenizer
+    #     tokenizer = RegexpTokenizer(r'\w+')
         
-        dir_path = staticfiles_storage.url(f'{self.data_dir}/{block_dir_relative}')[1:]
-        td_pairs = []
-        for doc_name in os.listdir(dir_path):
-            doc_path = staticfiles_storage.url(f'{dir_path}/{doc_name}')[1:]
-            with open(doc_path, 'r') as f:
-                for line in File(f).readlines():
-                    # tokenization
-                    rem_num = re.sub('[0-9]+', '', line)
-                    word_tokens = tokenizer.tokenize(rem_num)
-                    for token in word_tokens:
-                        # stemming, remove stopwords, and append to td_pairs
-                        if not token.lower() in stop_words:
-                            stem = stemmer.stem(token.strip())
-                            term_id = self.term_id_map[stem]
-                            path_doc = staticfiles_storage.url(f'{block_dir_relative}/{doc_name}')[1:]
-                            doc_id = self.doc_id_map[path_doc]
-                            td_pairs.append((term_id, doc_id))
-        return td_pairs
+    #     dir_path = staticfiles_storage.url(f'{self.data_dir}/{block_dir_relative}')[1:]
+    #     td_pairs = []
+    #     for doc_name in os.listdir(dir_path):
+    #         doc_path = staticfiles_storage.url(f'{dir_path}/{doc_name}')[1:]
+    #         with open(doc_path, 'r') as f:
+    #             for line in File(f).readlines():
+    #                 # tokenization
+    #                 rem_num = re.sub('[0-9]+', '', line)
+    #                 word_tokens = tokenizer.tokenize(rem_num)
+    #                 for token in word_tokens:
+    #                     # stemming, remove stopwords, and append to td_pairs
+    #                     if not token.lower() in stop_words:
+    #                         stem = stemmer.stem(token.strip())
+    #                         term_id = self.term_id_map[stem]
+    #                         path_doc = staticfiles_storage.url(f'{block_dir_relative}/{doc_name}')[1:]
+    #                         doc_id = self.doc_id_map[path_doc]
+    #                         td_pairs.append((term_id, doc_id))
+    #     return td_pairs
 
     def invert_write(self, td_pairs, index):
         """
@@ -969,32 +969,32 @@ class BSBIIndex:
         result = [r[::-1] for r in result]                  # reverse tuple element to (score, doc)
         return result
 
-    def index(self):
-        """
-        Base indexing code
-        BAGIAN UTAMA untuk melakukan Indexing dengan skema BSBI (blocked-sort
-        based indexing)
+    # def index(self):
+    #     """
+    #     Base indexing code
+    #     BAGIAN UTAMA untuk melakukan Indexing dengan skema BSBI (blocked-sort
+    #     based indexing)
 
-        Method ini scan terhadap semua data di collection, memanggil parse_block
-        untuk parsing dokumen dan memanggil invert_write yang melakukan inversion
-        di setiap block dan menyimpannya ke index yang baru.
-        """
-        # loop untuk setiap sub-directory di dalam folder collection (setiap block)
-        for block_dir_relative in tqdm(sorted(next(os.walk(self.data_dir))[1])):
-            td_pairs = self.parse_block(block_dir_relative)
-            index_id = 'intermediate_index_'+block_dir_relative
-            self.intermediate_indices.append(index_id)
-            with InvertedIndexWriter(index_id, self.postings_encoding, directory = self.output_dir) as index:
-                self.invert_write(td_pairs, index)
-                td_pairs = None
+    #     Method ini scan terhadap semua data di collection, memanggil parse_block
+    #     untuk parsing dokumen dan memanggil invert_write yang melakukan inversion
+    #     di setiap block dan menyimpannya ke index yang baru.
+    #     """
+    #     # loop untuk setiap sub-directory di dalam folder collection (setiap block)
+    #     for block_dir_relative in tqdm(sorted(next(os.walk(self.data_dir))[1])):
+    #         td_pairs = self.parse_block(block_dir_relative)
+    #         index_id = 'intermediate_index_'+block_dir_relative
+    #         self.intermediate_indices.append(index_id)
+    #         with InvertedIndexWriter(index_id, self.postings_encoding, directory = self.output_dir) as index:
+    #             self.invert_write(td_pairs, index)
+    #             td_pairs = None
     
-        self.save()
+    #     self.save()
 
-        with InvertedIndexWriter(self.index_name, self.postings_encoding, directory = self.output_dir) as merged_index:
-            with contextlib.ExitStack() as stack:
-                indices = [stack.enter_context(InvertedIndexReader(index_id, self.postings_encoding, directory=self.output_dir))
-                               for index_id in self.intermediate_indices]
-                self.merge(indices, merged_index)
+    #     with InvertedIndexWriter(self.index_name, self.postings_encoding, directory = self.output_dir) as merged_index:
+    #         with contextlib.ExitStack() as stack:
+    #             indices = [stack.enter_context(InvertedIndexReader(index_id, self.postings_encoding, directory=self.output_dir))
+    #                            for index_id in self.intermediate_indices]
+    #             self.merge(indices, merged_index)
 
 # Create your views here.
 def meedle_view(request):
