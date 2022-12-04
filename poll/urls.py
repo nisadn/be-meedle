@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from meedle.views import (meedle_view) 
 from questions.views import (question_detail , 
 save_question_result ,login_view , register_view ,
  dashboard ,create_poll , see_answers)
@@ -22,6 +23,7 @@ save_question_result ,login_view , register_view ,
 
 urlpatterns = [
     path('' , login_view , name="login"),
+    path('meedle/' , meedle_view , name="meedle"),
     path('register/' , register_view , name="register_view"),
     path('dashboard/' , dashboard , name="dashboard"),
     path('create_poll/' , create_poll , name="create_poll"),
