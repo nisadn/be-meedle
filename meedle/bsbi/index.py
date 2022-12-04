@@ -1,5 +1,6 @@
 import pickle
 import os
+from poll.settings import BASE_DIR
 
 class InvertedIndex:
     """
@@ -47,8 +48,8 @@ class InvertedIndex:
         directory (str): directory dimana file index berada
         """
 
-        self.index_file_path = os.path.join('meedle', 'bsbi', directory, index_name+'.index')
-        self.metadata_file_path = os.path.join('meedle', 'bsbi', directory, index_name+'.dict')
+        self.index_file_path = os.path.join(BASE_DIR, 'meedle', 'bsbi', directory, index_name+'.index')
+        self.metadata_file_path = os.path.join(BASE_DIR, 'meedle', 'bsbi', directory, index_name+'.dict')
 
         self.postings_encoding = postings_encoding
         self.directory = directory

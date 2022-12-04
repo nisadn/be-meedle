@@ -5,6 +5,7 @@ import heapq
 import time
 import math
 import re
+from poll.settings import BASE_DIR
 
 from meedle.bsbi.index import InvertedIndexReader, InvertedIndexWriter
 from meedle.bsbi.util import IdMap, sorted_merge_posts_and_tfs
@@ -43,17 +44,17 @@ class BSBIIndex:
     def save(self):
         """Menyimpan doc_id_map and term_id_map ke output directory via pickle"""
 
-        with open(os.path.join(self.output_dir, 'terms.dict'), 'wb') as f:
+        with open(os.path.join(BASE_DIR, self.output_dir, 'terms.dict'), 'wb') as f:
             pickle.dump(self.term_id_map, f)
-        with open(os.path.join(self.output_dir, 'docs.dict'), 'wb') as f:
+        with open(os.path.join(BASE_DIR, self.output_dir, 'docs.dict'), 'wb') as f:
             pickle.dump(self.doc_id_map, f)
 
     def load(self):
         """Memuat doc_id_map and term_id_map dari output directory"""
 
-        with open(os.path.join('meedle', 'bsbi', self.output_dir, 'terms.dict'), 'rb') as f:
+        with open(os.path.join(BASE_DIR, 'meedle', 'bsbi', self.output_dir, 'terms.dict'), 'rb') as f:
             self.term_id_map = pickle.load(f)
-        with open(os.path.join('meedle', 'bsbi', self.output_dir, 'docs.dict'), 'rb') as f:
+        with open(os.path.join(BASE_DIR, 'meedle', 'bsbi', self.output_dir, 'docs.dict'), 'rb') as f:
             self.doc_id_map = pickle.load(f)
 
     def parse_block(self, block_dir_relative):
@@ -103,10 +104,10 @@ class BSBIIndex:
         # tokenizer
         tokenizer = RegexpTokenizer(r'\w+')
         
-        dir_path = os.path.join(self.data_dir, block_dir_relative)
+        dir_path = os.path.join(BASE_DIR, self.data_dir, block_dir_relative)
         td_pairs = []
         for doc_name in os.listdir(dir_path):
-            with open(os.path.join(dir_path, doc_name), 'r') as f:
+            with open(os.path.join(BASE_DIR, dir_path, doc_name), 'r') as f:
                 for line in f.readlines():
                     # tokenization
                     rem_num = re.sub('[0-9]+', '', line)
@@ -116,7 +117,7 @@ class BSBIIndex:
                         if not token.lower() in stop_words:
                             stem = stemmer.stem(token.strip())
                             term_id = self.term_id_map[stem]
-                            doc_id = self.doc_id_map[os.path.join(block_dir_relative, doc_name)]
+                            doc_id = self.doc_id_map[os.path.join(BASE_DIR, block_dir_relative, doc_name)]
                             td_pairs.append((term_id, doc_id))
         return td_pairs
 
