@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 import json
-# from meedle.bsbi.bsbi import BSBIIndex
-# from meedle.bsbi.compression import VBEPostings
+from meedle.bsbi.bsbi import BSBIIndex
+from meedle.bsbi.compression import VBEPostings
 import os
 from poll.settings import BASE_DIR, STATIC_URL,STATIC_ROOT
 
@@ -30,13 +30,13 @@ def search_query(request):
 
     query = body["query"]
 
-    # BSBI_instance = BSBIIndex(data_dir = 'collection', \
-    #     postings_encoding = VBEPostings, \
-    #     output_dir = 'index')
+    BSBI_instance = BSBIIndex(data_dir = 'collection', \
+        postings_encoding = VBEPostings, \
+        output_dir = 'index')
 
     docs = []
-    # for (_, doc) in BSBI_instance.retrieve_bm25(query, k = 10):
-    #     docs.append(doc)
+    for (_, doc) in BSBI_instance.retrieve_bm25(query, k = 10):
+        docs.append(doc)
     
     response = {
         "query": query,
@@ -52,8 +52,8 @@ def get_docs(request):
         return HttpResponse(status=400)
 
     result = {}
-    # for doc_id in body["docs_id"]:
-    #     with open(os.path.join(STATIC_ROOT, "collection", str(doc_id)), 'r') as f:
-    #         result[doc_id] = f.read()
+    for doc_id in body["docs_id"]:
+        with open(os.path.join(STATIC_ROOT, "collection", str(doc_id)), 'r') as f:
+            result[doc_id] = f.read()
 
     return JsonResponse(result, safe=False)
