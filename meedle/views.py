@@ -19,7 +19,7 @@ import re
 
 from tqdm import tqdm
 import nltk
-nltk.download('stopwords')
+# nltk.download('stopwords')
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
