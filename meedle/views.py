@@ -51,8 +51,8 @@ def get_docs(request):
         return HttpResponse(status=400)
 
     result = {}
-    for doc_id in body["docs_id"]:
-        with open(os.path.join(STATIC_ROOT, "collection", str(doc_id)), 'r') as f:
-            result[doc_id] = f.read()
+    # for doc_id in body["docs_id"]:
+    #     with open(os.path.join(STATIC_ROOT, "collection", str(doc_id)), 'r') as f:
+    #         result[doc_id] = f.read()
 
     return JsonResponse(result, safe=False)
