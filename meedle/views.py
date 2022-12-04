@@ -306,7 +306,7 @@ class InvertedIndex:
         https://docs.python.org/3/reference/datamodel.html#object.__enter__
         """
         # Membuka index file
-        idx_file = open(self.index_file_path, 'rb+')
+        idx_file = open(self.index_file_path, 'rb')
         self.index_file = File(idx_file)
 
         # Kita muat postings dict dan terms iterator dari file metadata
