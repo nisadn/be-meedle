@@ -7,3 +7,4 @@ tzdata==2022.1
 tqdm==4.64.1
 nltk==3.7
 whitenoise>=5.2.0,<6.0.0
+django-cors-headers==3.13.0
