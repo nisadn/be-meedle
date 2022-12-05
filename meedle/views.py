@@ -4,6 +4,7 @@ import json
 from .helpers import BSBIIndex, VBEPostings
 from django.core.files import File
 from django.contrib.staticfiles.storage import staticfiles_storage
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -17,9 +18,10 @@ def endpoint_test(request, keyword):
     }
     return JsonResponse(data, safe=False)
 
+@csrf_exempt 
 def search_query(request):
     body = json.loads(request.body)
-    if "query" not in body:
+    if request.method != "POST" or "query" not in body:
         return HttpResponse(status=400)
 
     query = body["query"]
@@ -46,10 +48,11 @@ def search_query(request):
 
     return JsonResponse(response, safe=False)
 
+@csrf_exempt 
 def get_docs(request):
 
     body = json.loads(request.body)
-    if "docs_id" not in body:
+    if request.method != "POST" or "docs_id" not in body:
         return HttpResponse(status=400)
 
     result = {}
