@@ -1,27 +1,21 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 import json
-from .helpers import BSBIIndex, VBEPostings, IdMap
+from .helpers import BSBIIndex, VBEPostings
 from django.core.files import File
 from django.contrib.staticfiles.storage import staticfiles_storage
 
 
 # Create your views here.
 def meedle_view(request):
-    return HttpResponse("<h1> Django Deployed meedle</h1>")
+    return HttpResponse("<h1> Welcome to Meedle</h1>")
 
-def search(request, keyword):
+def endpoint_test(request, keyword):
     data = {
         "resp": "ok",
         "keyword": keyword,
     }
     return JsonResponse(data, safe=False)
-
-def search_with_body(request):
-    body = json.loads(request.body)
-    if "query" not in body:
-        return HttpResponse(status=400)
-    return JsonResponse(body, safe=False)
 
 def search_query(request):
     body = json.loads(request.body)
@@ -29,17 +23,24 @@ def search_query(request):
         return HttpResponse(status=400)
 
     query = body["query"]
+    topk = 1033 # all docs collection
+    if "k" in body:
+        if type(body["k"]) != int:
+            return HttpResponse(status=400)
+        topk = body["k"]
 
     BSBI_instance = BSBIIndex(data_dir = 'collection', \
         postings_encoding = VBEPostings, \
         output_dir = 'index')
 
     docs = []
-    for (_, doc) in BSBI_instance.retrieve_bm25(query, k = 10):
+    for (_, doc) in BSBI_instance.retrieve_bm25(query, k = topk):
         docs.append(doc)
     
     response = {
         "query": query,
+        "k": topk,
+        "retrieved": len(docs),
         "docs_id": docs,
     }
 

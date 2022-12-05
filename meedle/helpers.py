@@ -404,7 +404,7 @@ class BSBIIndex:
             self.doc_id_map.id_to_str = pickle.load(File(f))
 
     
-    def retrieve_bm25(self, query, k = 10, k1 = 10, b = 0.5):
+    def retrieve_bm25(self, query, k = 10, k1 = 2, b = 0.75):
         """
         Melakukan Ranked Retrieval dengan skema BM25 dan TaaT (Term-at-a-Time).
         Method akan mengembalikan top-K retrieval results.

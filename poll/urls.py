@@ -15,13 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from meedle.views import (meedle_view, search, search_with_body, search_query, get_docs)
+from meedle.views import (meedle_view, endpoint_test, search_query, get_docs)
 
 
 urlpatterns = [
     path('' , meedle_view , name="meedle"),
-    path('search/<str:keyword>', search, name="search"),
-    path('search_with_body', search_with_body, name="search_with_body"),
+    path('search/<str:keyword>', endpoint_test, name="endpoint_test"),
     path('search_query', search_query, name="search_query"),
     path('get_docs', get_docs, name="get_docs"),
     path('admin/', admin.site.urls),
