@@ -15,30 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from meedle.views import (meedle_view, search, search_with_body, search_query, get_docs) 
-from questions.views import (question_detail , 
-save_question_result ,login_view , register_view ,
- dashboard ,create_poll , see_answers)
+from meedle.views import (meedle_view, search, search_with_body, search_query, get_docs)
 
 
 urlpatterns = [
-    path('' , login_view , name="login"),
-    path('meedle/' , meedle_view , name="meedle"),
-
+    path('' , meedle_view , name="meedle"),
     path('search/<str:keyword>', search, name="search"),
     path('search_with_body', search_with_body, name="search_with_body"),
     path('search_query', search_query, name="search_query"),
     path('get_docs', get_docs, name="get_docs"),
-
-
-    path('register/' , register_view , name="register_view"),
-    path('dashboard/' , dashboard , name="dashboard"),
-    path('create_poll/' , create_poll , name="create_poll"),
-path('see_answers/' , see_answers , name="see_answers"),
-
-
-
-    path('question/<question_uid>/' , question_detail , name="question_detail"),
-    path('api/save_question_result/' , save_question_result),
     path('admin/', admin.site.urls),
 ]
