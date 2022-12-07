@@ -58,7 +58,15 @@ def get_docs(request):
     result = {}
     for doc_id in body["docs_id"]:
         url = staticfiles_storage.url(f'collection/{str(doc_id)}')
-        with open(url[1:], 'r') as f:
-            result[doc_id] = File(f).read()
+        try:
+            with open(url[1:], 'r') as f:
+                content = File(f).read()
+                content = content.replace("-\n", "")
+                if "truncate" in body and body["truncate"] and len(content) > 300:
+                    content = content[:300]
+                    content += "..."
+                result[doc_id] = content
+        except:
+            pass
 
     return JsonResponse(result, safe=False)
