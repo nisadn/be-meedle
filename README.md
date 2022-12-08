@@ -4,6 +4,38 @@ This is a Django project.
 
 This is a college assignment for Information Retrieval course. Meedle is a medical search engine that uses collections from Medline and BM25 as the scoring method. The project consisted of two repositories. This is my backend repo and the other one is for [frontend](https://github.com/nisadn/meedle).
 
+## List of Endpoints
+
+### Query retrieval
+
+`POST /search_query`
+
+Request body
+
+```
+{
+    "query": "alkylated with radioactive iodoacetate",
+    "k": 10
+}
+```
+
+### Get docs
+
+`POST /get_docs`
+
+Request body
+
+```
+{
+    "docs_id": [
+        "6\\507.txt",
+        "6\\554.txt",
+        "11\\1003.txt"
+    ],
+    "truncate": true
+}
+```
+
 ## Run Locally
 
 Install the dependencies once with `python -m pip install -r requirements.txt` 
