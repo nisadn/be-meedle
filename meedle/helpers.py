@@ -489,7 +489,9 @@ class BSBIIndex:
                 merged_scores = sorted_merge_posts_and_tfs(list1, list2)
                 heapq.heappush(heap, merged_scores)
 
-        heap_res = sorted(heap[0], key=lambda t: t[1])      # sort based on score
-        result = heap_res[-1:-k-1:-1]                       # retrieve k-top
-        result = [r[::-1] for r in result]                  # reverse tuple element to (score, doc)
+        result = []
+        if (len(heap) > 0):
+            heap_res = sorted(heap[0], key=lambda t: t[1])      # sort based on score
+            result = heap_res[-1:-k-1:-1]                       # retrieve k-top
+            result = [r[::-1] for r in result]                  # reverse tuple element to (score, doc)
         return result
